@@ -12,7 +12,7 @@ pescalar([L1H|L1T],[L2H|L2T],P):-
 		
 % 4, sets: union & intersection
 intersection([],_,[]).
-intersection([L1H|L1T],L2, [L1H|I]):-An FPT Algorithm for Set Splitting
+intersection([L1H|L1T],L2, [L1H|I]):-
 	member(L1H,L2),!,
 	intersection(L1T, L2, I).
 intersection([_|L1T],L2, I):-
@@ -21,9 +21,19 @@ intersection([_|L1T],L2, I):-
 union([],[],[]).
 
 % 5 last & reverse list using concat
+concat([],L,L).
+concat([X|L1],L2,[X|L3]):- 
+	concat(L1,L2,L3).
+
 last([A],A).
 last([A|LT],T):-
 	last(LT,T).
+
+last2(L,X):-
+	concat(_,[X],L).
+
+reverse(L,RL):-
+	concat( , , )
 
 
 % 6 fib
