@@ -4,15 +4,27 @@ bridgeCapacity(2).
 
 people([1,2,5,8]).
 
+mysubset([], []).
+mysubset([E|Tail], [E|NTail]):-
+  mysubset(Tail, NTail).
+mysubset([_|Tail], NTail):-
+  mysubset(Tail, NTail).
+
+mywrite([]):- nl.
+mywrite([X|XS]):-
+	write(X),nl,
+	mywrite(XS).
+
+
 move(LsrcB,LdstB,Cb,LsrcA,LdstA,Ca):-
 	bridgeCapacity(MaxBridge),
 	between(1,MaxBridge,K),
-	subset(LsrcB,S),
+	mysubset(LsrcB,S),
 	length(S,K),
 	subtract(LsrcB,S,LsrcA),
 	append(LdstB,S,LdstA),
-	sum(S,Sum),
-	Ca is Cb + Sum.
+	max_list(S,Slowest),
+	Ca is Cb + Slowest.
 
 % from left to right
 unPaso([0,Lb,Rb,Cb,N],[1,La,Ra,Ca,N]):-
@@ -28,5 +40,5 @@ solucionOptima:-
 	nat(N),
 	people(Li),
 	camino([0,Li,[],0,N],[1,[],_,C,N],[[0,Li,[],0,N]],L),
-	write(L), nl,
+	mywrite(L), nl,
 	halt.
