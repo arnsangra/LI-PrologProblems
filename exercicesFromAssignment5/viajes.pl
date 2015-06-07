@@ -19,14 +19,11 @@ nat(N):-
     nat(X),
     N is X + 1.
 
-
 subsetFeatures([], []).
 subsetFeatures([City | Tail], Features):-
     cityAttractions(City, CityFeatures),
     subsetFeatures(Tail, TailFeatures),
     union(CityFeatures, TailFeatures, Features).
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % generate all possible subsets of a given list,
 % by either picking the head of the list or not.

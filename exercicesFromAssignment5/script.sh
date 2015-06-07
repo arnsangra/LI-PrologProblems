@@ -1,6 +1,6 @@
 #! /bin/bash
 
-function viajesProlog () {
+function viajes_prolog () {
 
     if [[ -e 'viajes.exe' ]]; then
         echo 'Removing old "viajes" executable.'
@@ -13,6 +13,18 @@ function viajesProlog () {
 
 }
 
+function viajes_picosat () {
+    if [[ -e 'viajes_picosat.exe' ]]; then
+        echo 'Removing old "viajes_picosat" executable.'
+        rm viajes_picosat.exe
+    fi
+    echo 'Compiling prolog...'
+    echo 'Running "viajes_picosat" problem, make sure to have picosat installed'
+    swipl -O -g main --stand_alone=true -o viajes_picosat.exe -c viajes_picosat.pl
+    ./viajes_picosat.exe
+
+}
+
 function usage () {
 
     echo 'Usage: script.sh option problem_name'
@@ -22,13 +34,21 @@ function usage () {
     echo ''
     echo 'available problems:'
     echo '  viajes.pl'
+    echo '  viajes_picosat.pl'
 
 }
 
 while getopts "hp:" opt; do
     case $opt in
     p)
-        viajesProlog
+        if[[ $opt =~ "viajes.pl"]]; then
+            viajes_prolog
+        elif [[ $opt =~ "viajes_picosat.pl" ]]; then
+            viajes_picosat
+        else
+            echo "unknown problem"
+            exit 1
+        fi
         ;;
     h)
         usage

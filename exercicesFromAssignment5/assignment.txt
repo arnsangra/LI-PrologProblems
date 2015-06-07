@@ -1,8 +1,10 @@
+***************************************************************************
+****************    Practice Statement:
 
 Hay que resolver de dos maneras el siguiente problema:
 
-A) totalmente en Prolog 
-B) mediante picosat 
+A) totalmente en Prolog
+B) mediante picosat
 
 
 Una família, de cara a planificar els propers viatges a realitzar, ha
@@ -30,3 +32,5 @@ atractius( delhi,     [cultura,etnies]           ).
 atractius( reunion,   [esport,relax,gastronomia] ).
 atractius( lima,      [paisatges,esport,cultura] ).
 atractius( banff,     [esport,paisatges]         ).
+
+***************************************************************************
