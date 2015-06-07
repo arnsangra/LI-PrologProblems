@@ -1,5 +1,20 @@
 % mandatory commented line to ensure vim's proper syntax highlighting, DO NOT REMOVE
 
+%% *********************************************************************************************** %
+%%                                                                                                 *
+%%                                       Lògica a la Informàtica                                   *
+%%    \_____________________________________________________________________________________/      *
+%%    /                                                                                     \      *
+%%                                       VIAJES (PROLOG VERSION):                                  *
+%%                                      07/05/2015, Qm Primavera                                   *
+%%                                                                                                 *
+%%                                                                                                 *
+%% *************************************************************************************************
+%%                                                                                                 *
+%%                                        Arnau Sangrà Rocamora                                    *
+%%                                                                                                 *
+%% *********************************************************************************************** %
+
 destinations([paris,bangkok,montevideo,windhoek,male,delhi,reunion,lima,banff]).
 
 travelRequirements([paisatges,cultura,etnies,gastronomia,esport,relax]).

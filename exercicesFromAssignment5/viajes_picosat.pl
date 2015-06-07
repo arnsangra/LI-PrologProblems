@@ -1,5 +1,20 @@
 % mandatory commented line to ensure vim's proper syntax highlighting, DO NOT REMOVE
 
+%% *********************************************************************************************** %
+%%                                                                                                 *
+%%                                       Lògica a la Informàtica                                   *
+%%    \_____________________________________________________________________________________/      *
+%%    /                                                                                     \      *
+%%                                       VIAJES (PICOSAT VERSION):                                 *
+%%                                      07/05/2015, Qm Primavera                                   *
+%%                                                                                                 *
+%%                                                                                                 *
+%% *************************************************************************************************
+%%                                                                                                 *
+%%                                        Arnau Sangrà Rocamora                                    *
+%%                                                                                                 *
+%% *********************************************************************************************** %
+
 :-dynamic(varNumber/3).
 :-dynamic(maxCities/1).
 symbolicOutput(0).
@@ -115,10 +130,11 @@ modelValidation(M):-
 
 displaySol([]).
 displaySol([H | Tail]):-
-    displaySol(Tail),
-    destinations(Destinations),
+destinations(Destinations),
     nth1(H,Destinations, City),
-    write('   -'), write(City), nl.
+    write('   -'), write(City), nl,
+    displaySol(Tail).
+
 
 
 %% ============================================================================= %%

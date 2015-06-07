@@ -1,7 +1,6 @@
 #! /bin/bash
 
 function viajes_prolog () {
-
     if [[ -e 'viajes.exe' ]]; then
         echo 'Removing old "viajes" executable.'
         rm viajes.exe
@@ -10,7 +9,6 @@ function viajes_prolog () {
     swipl -O -g solve --stand_alone=true -o viajes.exe -c viajes.pl
     echo 'Running "viajes" problem'
     ./viajes.exe
-
 }
 
 function viajes_picosat () {
@@ -22,11 +20,9 @@ function viajes_picosat () {
     echo 'Running "viajes_picosat" problem, make sure to have picosat installed'
     swipl -O -g main --stand_alone=true -o viajes_picosat.exe -c viajes_picosat.pl
     ./viajes_picosat.exe
-
 }
 
 function usage () {
-
     echo 'Usage: script.sh option problem_name'
     echo 'available options:'
     echo '  -p  solve viajes problem'
@@ -35,7 +31,6 @@ function usage () {
     echo 'available problems:'
     echo '  viajes.pl'
     echo '  viajes_picosat.pl'
-
 }
 
 while getopts "hp:" opt; do

@@ -1,3 +1,20 @@
+% mandatory commented line to ensure vim's proper syntax highlighting, DO NOT REMOVE
+
+%% *********************************************************************************************** %
+%%                                                                                                 *
+%%                                       Lògica a la Informàtica                                   *
+%%    \_____________________________________________________________________________________/      *
+%%    /                                                                                     \      *
+%% 		                                   EXERCICES 2nd ASSIG.                                    *
+%%                                      07/05/2015, Qm Primavera                                   *
+%%                                                                                                 *
+%%                                                                                                 *
+%% *************************************************************************************************
+%%                                                                                                 *
+%%                                        Arnau Sangrà Rocamora                                    *
+%%                                                                                                 *
+%% *********************************************************************************************** %
+
 % 2
 prod([],1).
 prod([H|L],P):-
@@ -9,7 +26,7 @@ pescalar([],[],0).
 pescalar([L1H|L1T],[L2H|L2T],P):-
 	pescalar(L1T,L2T, Esc),
 	P is Esc + (L1H * L2H).
-		
+
 % 4, sets: union & intersection
 intersection([],_,[]).
 intersection([L1H|L1T],L2, [L1H|I]):-
@@ -22,7 +39,7 @@ union([],[],[]).
 
 % 5 last & reverse list using concat
 concat([],L,L).
-concat([X|L1],L2,[X|L3]):- 
+concat([X|L1],L2,[X|L3]):-
 	concat(L1,L2,L3).
 
 last([A],A).
