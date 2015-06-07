@@ -83,10 +83,11 @@ mySubset([ _ | Tail], NTail):-
   mySubset(Tail, NTail).
 
 
-execution:-
+execution(Iter):-
+    write(Iter), nl,
     retractall(numClauses(_)),
-    % differs asserts location
-    assert(numClauses(0)),    assert(numVars(0)),
+    assert(numClauses(0)),
+    %% assert(numVars(0)),
 
     tell(clauses), writeClauses, told,
     tell(header),  writeHeader,  told,
@@ -120,13 +121,13 @@ displaySol(M):-
 
 main:- symbolicOutput(1), !, writeClauses, halt. % escribir bonito, no ejecutar
 main:-
-    %% assert(numClauses(0)),
-    %% assert(numVars(0)),
+    assert(numClauses(0)),
+    assert(numVars(0)),
 
     nat(N),
     assert(maxNumCities(N)),
 
-    execution,
+    execution(N)
     loadModel(Model),
 
     modelValidation(Model),
