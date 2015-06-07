@@ -83,7 +83,7 @@ mySubset([ _ | Tail], NTail):-
   mySubset(Tail, NTail).
 
 
-execution(Iter):-
+execution(Iter, Model):-
     write(Iter), nl,
     retractall(numClauses(_)),
     assert(numClauses(0)),
@@ -93,12 +93,13 @@ execution(Iter):-
     tell(header),  writeHeader,  told,
 
     unix('cat header clauses > infile.cnf'),
-    unix('picosat -v -o model infile.cnf').
-
-loadModel(M):-
-    unix('rm header'), unix('rm clauses'), unix('rm infile.cnf'),!,
+    unix('picosat -v -o model infile.cnf'),
+    unix('rm header'), unix('rm clauses'), unix('rm infile.cnf'),
     see(model),readModel(M), seen,
-    unix('rm model').
+    unix('rm model'), !.
+
+%% loadModel(M):-
+
 
 modelValidation([]):-
     maxNumCities(K),
@@ -127,8 +128,8 @@ main:-
     nat(N),
     assert(maxNumCities(N)),
 
-    execution(N)
-    loadModel(Model),
+    execution(N, Model),
+    %% loadModel(Model),
 
     modelValidation(Model),
     halt.
