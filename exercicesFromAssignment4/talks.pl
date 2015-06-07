@@ -58,3 +58,4 @@ display(A,B,C):-
     write('Slot A: '), displayList(A), nl,
     write('Slot B: '), displayList(B), nl,
     write('Slot C: '), displayList(C), nl.
+

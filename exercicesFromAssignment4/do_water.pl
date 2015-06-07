@@ -48,7 +48,8 @@ solucionOptima:-
 	nat(N),
 	camino([0,0],[0,4],[[0,0]],C),
 	length(C,N),
-	write(N),nl, write(C), nl,
+	write('Minimum steps: '), write(N), nl,
+	write(C), nl,
 	halt.
 
 %%%%%%%%%%%%%%%%%%%

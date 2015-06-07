@@ -1,3 +1,5 @@
+% mandatory prolog commented line to ensure vim's proper syntax highlighting, DO NOT REMOVE
+
 nat(0).
 nat(N):-
 	nat(M),
