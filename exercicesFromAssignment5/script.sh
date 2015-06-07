@@ -41,14 +41,14 @@ function usage () {
 while getopts "hp:" opt; do
     case $opt in
     p)
-        if[[ $opt =~ "viajes.pl"]]; then
+        if [[ $OPTARG =~ 'viajes.pl' ]]; then
             viajes_prolog
-        elif [[ $opt =~ "viajes_picosat.pl" ]]; then
+        elif [[ $OPTARG =~ 'viajes_picosat.pl' ]]; then
             viajes_picosat
         else
-            echo "unknown problem"
-            exit 1
+            echo 'Error, problem name not found or not available.'
         fi
+
         ;;
     h)
         usage

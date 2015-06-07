@@ -1,5 +1,9 @@
 % mandatory commented line to ensure vim's proper syntax highlighting, DO NOT REMOVE
 
+:-dynamic(varNumber/3).
+:-dynamic(maxCities/1).
+symbolicOutput(0).
+
 destinations([paris,bangkok,montevideo,windhoek,male,delhi,reunion,lima,banff]).
 
 travelRequirements([paisatges,cultura,etnies,gastronomia,esport,relax]).
@@ -26,29 +30,21 @@ writeClauses:-
 % set limit over number of cities visitable
 numberCitiesBounded:-
     destinations(Cities),
-    destinationsEncoded(Cities, CitiesAsVariables),
     maxNumCities(MaxCities),
-    atMostK(CitiesAsVariables, MaxCities).
+    atMostK(Cities, MaxCities).
 
-% translates cities to variables following pattern "city-positionListDestination"
-destinationsEncoded([], []).
-destinationsEncoded([Head | Tail], CitiesAsVariables):-
-    destinationsEncoded(Tail, Tmp),
-    destinationToVar(Head, HeadAsVar),
-    append([HeadAsVar], Tmp, CitiesAsVariables).
-
-%
-destinationToVar(Destination, city-Position):-
-    destinations(Destinations),
-    %differing point from 'cityToVar' member??
-    nth0(Destination,Destinations, Position).
-
-varToDestination(city-Position, City):-
-    destinations(Destinations),
-    nth0(Position, Destinations, City).
+% given a list of cities, writes a clause contraining AMK.
+atMostK(LCities, K) :-
+    KMax is K + 1,
+    mySubset(LCities, S),
+    length(S,KMax),
+    findall(\+Dest, member(Dest,S), Clause),
+    writeClause(Clause),fail.
+atMostK(_,_).
 
 %-------------------------------------------------------------------------------
 %-------------------------------    CONSTRAINING INTERESTS
+
 interestsBounded:-
     travelRequirements(Requirements),
     requirementsEnsured(Requirements).
@@ -62,7 +58,7 @@ requirementsEnsured([Head | Tail]):-
     writeClause(Dest).           % ALO constraint
 
 % iterate over cities to find those with feature, add these to a DestinationsWithRequirement.
-destinationHasInterest(, [], []).
+destinationHasInterest(_, [], []).
 destinationHasInterest(Feature, [ City | Tail ], DestinationsWithRequirement):-
     destinationHasInterest(Feature, Tail, Tmp),
     cityAttractions(City, CityFeatures),
@@ -86,16 +82,8 @@ mySubset([ Head | Tail], [ Head | NTail]):-
 mySubset([ _ | Tail], NTail):-
   mySubset(Tail, NTail).
 
-% given a list of cities, writes a clause contraining AMK.
-atMostK(LCities, K) :-
-    KMax is K + 1,
-    mysubset(LCities, S),
-    length(S,KMax),
-    findall(\+Dest, member(Dest,S), Clause),
-    writeClause(Clause),fail.
-atMostK(_,_).
 
-execution(Model):-
+execution:-
     retractall(numClauses(_)),
     % differs asserts location
     assert(numClauses(0)),    assert(numVars(0)),
@@ -106,10 +94,10 @@ execution(Model):-
     unix('cat header clauses > infile.cnf'),
     unix('picosat -v -o model infile.cnf').
 
-loadModel:-
+loadModel(M):-
     unix('rm header'), unix('rm clauses'), unix('rm infile.cnf'),!,
     see(model),readModel(M), seen,
-    unix(rm model).
+    unix('rm model').
 
 modelValidation([]):-
     maxNumCities(K),
@@ -122,6 +110,7 @@ modelValidation(M):-
     displaySol(M).
 
 displaySol(M):-
+    write(M), nl,
     write('HELLO, MODEL IS OK!'), nl,
     halt.
 
@@ -140,7 +129,7 @@ main:-
     execution,
     loadModel(Model),
 
-    modelValidation(Model)
+    modelValidation(Model),
     halt.
 
 var2num(T,N):- hash_term(T,Key), varNumber(Key,T,N),!.
