@@ -1,4 +1,4 @@
-% mandatory prolog commented line to ensure vim's proper syntax highlighting, DO NOT REMOVE
+% mandatory commented line to ensure vim's proper syntax highlighting, DO NOT REMOVE
 
 bridgeCapacity(2).
 

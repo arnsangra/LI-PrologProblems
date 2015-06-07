@@ -1,7 +1,4 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-
+% mandatory commented line to ensure vim's proper syntax highlighting, DO NOT REMOVE
 
 % set the number of missionaries and cannibals and canoe capacity
 missionary(3).
@@ -20,7 +17,7 @@ unPaso([l,Mlb,Clb,Mrb,Crb],[r,Mla,Cla,Mra,Cra]):-
 	between(0,Clb,Kc),
 
 	K is Km + Kc, 		% canoe passengers are the sum of M and C picked from left
-	K >= 1,				% check canoe passengers capacity	
+	K >= 1,				% check canoe passengers capacity
 	K =< Kmax,
 	%% ensure nextState constraints
 	Mla is Mlb - Km,
@@ -36,7 +33,7 @@ unPaso([r,Mlb,Clb,Mrb,Crb],[l,Mla,Cla,Mra,Cra]):-
 	between(0,Crb,Kc),
 
 	K is Km + Kc, 		% canoe passengers are the sum of M and C picked from left
-	K >= 1,				% check canoe passengers capacity	
+	K >= 1,				% check canoe passengers capacity
 	K =< Kmax,
 	%% ensure nextState constraints
 	Mra is Mrb - Km,

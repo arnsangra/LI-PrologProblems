@@ -1,38 +1,54 @@
-# Hay que resolver de dos maneras el siguiente problema:
+% mandatory commented line to ensure vim's proper syntax highlighting, DO NOT REMOVE
 
-# A) totalmente en Prolog
-# B) mediante picosat
+destinations([paris,bangkok,montevideo,windhoek,male,delhi,reunion,lima,banff]).
+
+travelRequirements([paisatges,cultura,etnies,gastronomia,esport,relax]).
+
+cityAttractions( paris,     [cultura,gastronomia]      ).
+cityAttractions( bangkok,   [paisatges,relax,esport]   ).
+cityAttractions( montevideo,[gastronomia,relax]        ).
+cityAttractions( windhoek,  [etnies,paisatges]         ).
+cityAttractions( male,      [paisatges,relax,esport]   ).
+cityAttractions( delhi,     [cultura,etnies]           ).
+cityAttractions( reunion,   [esport,relax,gastronomia] ).
+cityAttractions( lima,      [paisatges,esport,cultura] ).
+cityAttractions( banff,     [esport,paisatges]         ).
+
+nat(0).
+nat(N):-
+    nat(X),
+    N is X + 1.
 
 
-# Una família, de cara a planificar els propers viatges a realitzar, ha
-# recopilat una llista de ciutats que els agradaria visitar. Per tal de
-# decidir a quines viatjaran, han confeccionat una llista dels atractius
-# que més valoren d'una ciutat: paisatges, gastronomia, cultura, etc..,
-# i saben quins d'aquests atractius té cada ciutat.
+subsetFeatures([], []).
+subsetFeatures([City | Tail], Features):-
+    cityAttractions(City, CityFeatures),
+    subsetFeatures(Tail, TailFeatures),
+    union(CityFeatures, TailFeatures, Features).
 
-# Donada tota aquesta informació, volen trobar el conjunt més petit de
-# ciutats tals que cadascun dels possibles atractius estigui present en
-# almenys una d'aquestes ciutat.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-# Datos de entrada:
-
-ciutats([paris,bangkok,montevideo,windhoek,male,delhi,reunion,lima,banff]).
-
-interessos([paisatges,cultura,etnies,gastronomia,esport,relax]).
-
-atractius( paris,     [cultura,gastronomia]      ).
-atractius( bangkok,   [paisatges,relax,esport]   ).
-atractius( montevideo,[gastronomia,relax]        ).
-atractius( windhoek,  [etnies,paisatges]         ).
-atractius( male,      [paisatges,relax,esport]   ).
-atractius( delhi,     [cultura,etnies]           ).
-atractius( reunion,   [esport,relax,gastronomia] ).
-atractius( lima,      [paisatges,esport,cultura] ).
-atractius( banff,     [esport,paisatges]         ).
-
+% generate all possible subsets of a given list,
+% by either picking the head of the list or not.
+mySubset([], []).
+mySubset([ Head | Tail], [ Head | NTail]):-
+  mySubset(Tail, NTail).
+mySubset([ _ | Tail], NTail):-
+  mySubset(Tail, NTail).
 
 solve:-
-	ciutats(C),
-	interessos(I),
+    destinations(Cities),
+    travelRequirements(Requirements),
+    nat(NCities),
+    mySubset(Cities, SelectedCities),
+    length(SelectedCities, NCities),
 
+    subsetFeatures(SelectedCities, FeaturesSelectedCities),
 
+    % True if all elements of SubSet belong to Set as well.
+    subset(Requirements, FeaturesSelectedCities),
+
+    write('Solution found with '), write(NCities), write(' cities.'), nl,
+    write('Interests Demanded: '), write(Requirements), nl,
+    write('Selected Cities: '), write(SelectedCities), nl,
+    halt.

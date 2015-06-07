@@ -1,3 +1,4 @@
+% mandatory commented line to ensure vim's proper syntax highlighting, DO NOT REMOVE
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%

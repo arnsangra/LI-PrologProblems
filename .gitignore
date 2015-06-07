@@ -1,3 +1,4 @@
 *.out
+*.exe
 run.pl
 .DS_Store

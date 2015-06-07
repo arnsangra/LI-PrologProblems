@@ -27,8 +27,8 @@ function prob_apart_A () {
 function prob_apart_B () {
 
     if [[ -e 'run.pl' ]]; then
-	echo 'Removing old talks executable.'
-	rm talks.exe
+	   echo 'Removing old talks executable.'
+	   rm talks.exe
     fi
     echo 'Compiling prolog...'
     swipl -O -g solve --stand_alone=true -o talks.exe -c talks.pl
@@ -67,11 +67,9 @@ while getopts "hp:" opt; do
 	    usage
 	    exit 0
 	    ;;
-	\?)
-	    echo \?
-	    usage
-	    exit 0
-	    ;;
+    \?)
+      echo "Invalid option: -$OPTARG" >&2
+      ;;
     esac
 done
 
