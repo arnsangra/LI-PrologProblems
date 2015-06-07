@@ -19,13 +19,12 @@ cityAttractions( lima,      [paisatges,esport,cultura] ).
 cityAttractions( banff,     [esport,paisatges]         ).
 
 
-
 writeClauses:-
     numberCitiesBounded,
     interestsBounded.
 
 %-------------------------------------------------------------------------------
-%-------------------------------    CONSTRAINING DESTINATIONS
+%-------------------------------    CONSTRAIN DESTINATIONS
 
 % set limit over number of cities visitable
 numberCitiesBounded:-
@@ -39,12 +38,14 @@ atMostK(LCities, K) :-
     mySubset(LCities, S),
     length(S,KMax),
     findall(\+Dest, member(Dest,S), Clause),
-    writeClause(Clause),fail.
+    writeClause(Clause),
+    fail.
 atMostK(_,_).
 
 %-------------------------------------------------------------------------------
-%-------------------------------    CONSTRAINING INTERESTS
+%-------------------------------    CONSTRAIN INTERESTS
 
+% set limit to ensure all interests are accomplished
 interestsBounded:-
     travelRequirements(Requirements),
     requirementsEnsured(Requirements).
@@ -55,7 +56,7 @@ requirementsEnsured([Head | Tail]):-
     requirementsEnsured(Tail),
     destinations(Destinations),
     destinationHasInterest(Head, Destinations, Dest),
-    writeClause(Dest).           % ALO constraint
+    writeClause(Dest).
 
 % iterate over cities to find those with feature, add these to a DestinationsWithRequirement.
 destinationHasInterest(_, [], []).
@@ -71,50 +72,53 @@ destinationHasInterest(Feature, [ _ | Tail ], DestinationsWithRequirement):-
 %-------------------------------------------------------------------------------
 %-------------------------------    AUXILIARY PREDICATES:
 
+% iterator, increase maxNumCities allowed
 nat(0).
 nat(N):-
     nat(X),
     N is X + 1.
 
+% generate all possible subsets of a given set.
 mySubset([], []).
 mySubset([ Head | Tail], [ Head | NTail]):-
   mySubset(Tail, NTail).
 mySubset([ _ | Tail], NTail):-
   mySubset(Tail, NTail).
 
-
-execution(Iter, Model):-
-    write(Iter), nl,
+% prepare clauses, execute picosat with the different constraints over maxNumCities
+execution:-
     retractall(numClauses(_)),
     assert(numClauses(0)),
-    %% assert(numVars(0)),
-
     tell(clauses), writeClauses, told,
     tell(header),  writeHeader,  told,
-
     unix('cat header clauses > infile.cnf'),
-    unix('picosat -v -o model infile.cnf'),
+    unix('picosat -v -o model infile.cnf').
+
+% read model from picosat execution
+loadModel(M):-
     unix('rm header'), unix('rm clauses'), unix('rm infile.cnf'),
     see(model),readModel(M), seen,
     unix('rm model'), !.
 
-%% loadModel(M):-
-
-
+% checks picosat's model correctness
 modelValidation([]):-
     maxNumCities(K),
     retract(maxNumCities(K)),
-    write('solution not found with '), write(K), write(' cities.'), nl,
+    write('Empty model -> solution not found with only '), write(K), write(' cities.'), nl,
     fail.
 modelValidation(M):-
     length(M,L),
     L > 0,
+    maxNumCities(K),
+    write('Solution found with '), write(K), write(' cities!'), nl,
     displaySol(M).
 
-displaySol(M):-
-    write(M), nl,
-    write('HELLO, MODEL IS OK!'), nl,
-    halt.
+displaySol([]).
+displaySol([H | Tail]):-
+    displaySol(Tail),
+    destinations(Destinations),
+    nth1(H,Destinations, City),
+    write('   -'), write(City), nl.
 
 
 %% ============================================================================= %%
@@ -128,8 +132,8 @@ main:-
     nat(N),
     assert(maxNumCities(N)),
 
-    execution(N, Model),
-    %% loadModel(Model),
+    execution,
+    loadModel(Model),
 
     modelValidation(Model),
     halt.
